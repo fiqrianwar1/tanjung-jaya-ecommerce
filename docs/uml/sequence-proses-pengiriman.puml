@@ -1,0 +1,24 @@
+@startuml
+actor Gudang
+participant "View (Blade/UI)" as View
+participant "FulfillmentController" as Controller
+participant "ShippingAPI (Service)" as Api
+participant "Order (Model)" as Model
+database "MySQL" as DB
+
+Gudang -> View : Pilih Pesanan & Input Resi
+View -> Controller : POST /warehouse/orders/{id}/ship (resi)
+
+Controller -> Api : validateWaybill(resi)
+Api --> Controller : valid (boolean)
+
+alt Resi Valid
+    Controller -> Model : updateStatus('Dikirim', resi)
+    Model -> DB : UPDATE orders SET status='Dikirim', resi=?
+    Controller --> View : redirect()->success()
+    View --> Gudang : "Pesanan Ditandai Dikirim"
+else Resi Tidak Valid
+    Controller --> View : redirect()->withError('Format Resi Salah')
+    View --> Gudang : Tampilkan Error Resi
+end
+@enduml

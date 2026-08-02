@@ -1,0 +1,18 @@
+@startuml
+actor Admin
+participant "View (Blade/UI)" as View
+participant "AdminCustomerController" as Controller
+participant "User (Model)" as Model
+database "MySQL" as DB
+
+Admin -> View : Ketik Keyword Pencarian di Halaman Pelanggan
+View -> Controller : GET /admin/customers?search=keyword
+
+Controller -> Model : search(keyword)
+Model -> DB : SELECT * FROM users WHERE name LIKE '%keyword%'
+DB --> Model : results
+Model --> Controller : Collection<User>
+
+Controller --> View : render('admin.customers.index', users)
+View --> Admin : Tampilkan Hasil Pencarian Pelanggan
+@enduml

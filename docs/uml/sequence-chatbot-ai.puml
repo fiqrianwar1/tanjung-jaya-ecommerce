@@ -1,0 +1,29 @@
+@startuml
+actor Customer
+participant "ChatWidget (Vue/React)" as View
+participant "ChatbotController" as Controller
+participant "NLP_AIService" as NLP
+participant "Order (Model)" as Model
+database "MySQL" as DB
+
+Customer -> View : Ketik Pesan (Misal: "Resi saya mana?")
+View -> Controller : POST /api/chat
+Controller -> NLP : processIntent(message)
+NLP --> Controller : intent (Type: "TRACKING")
+
+alt intent == 'TRACKING'
+    Controller -> Model : getLastOrder(user_id)
+    Model -> DB : SELECT * FROM orders...
+    DB --> Model : result
+    Model --> Controller : Order Object
+    Controller --> View : JSON {reply: "Resi Anda: " + Order.resi}
+else intent == 'FAQ'
+    Controller -> NLP : getFAQAnswer(message)
+    NLP --> Controller : answer_text
+    Controller --> View : JSON {reply: answer_text}
+else intent == 'UNKNOWN'
+    Controller --> View : JSON {reply: "Maaf, saya kurang mengerti..."}
+end
+
+View --> Customer : Tampilkan Balasan Chatbot
+@enduml

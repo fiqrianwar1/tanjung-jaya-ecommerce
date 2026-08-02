@@ -1,0 +1,19 @@
+@startuml
+|Admin|
+start
+:Buka Halaman Kelola Produk;
+:Klik "Tambah/Edit Produk";
+:Input Data Produk (Nama, Kategori, Harga, Gambar);
+:Klik "Simpan";
+
+|Sistem|
+:Validasi Data Input;
+if (Data Valid?) then (Ya)
+  :Simpan Data ke Database;
+  :Catat ke Audit Trail;
+  :Tampilkan Pesan "Produk Disimpan";
+else (Tidak)
+  :Tampilkan Pesan Error Validasi;
+endif
+stop
+@enduml

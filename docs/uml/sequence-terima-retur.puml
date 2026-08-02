@@ -1,0 +1,31 @@
+@startuml
+actor Gudang
+participant "View (Blade/UI)" as View
+participant "ReturnReceiptController" as Controller
+participant "ReturnRequest (Model)" as Model
+participant "Product (Model)" as ProductModel
+database "MySQL" as DB
+
+Gudang -> View : Input No RMA & Hasil Cek Fisik
+View -> Controller : POST /warehouse/returns/{id}/receive
+
+Controller -> Model : find(id)
+Model -> DB : SELECT * FROM return_requests
+DB --> Model : ReturnRequest
+
+alt Kondisi Fisik Sesuai
+    Controller -> Model : updateStatus('Selesai (Retur Diterima)')
+    Model -> DB : UPDATE return_requests
+    
+    Controller -> ProductModel : incrementBadStock(qty)
+    ProductModel -> DB : UPDATE products SET bad_stock = bad_stock + ?
+    
+    Controller --> View : redirect()->success()
+else Fisik Tidak Sesuai
+    Controller -> Model : updateStatus('Retur Bermasalah', notes)
+    Model -> DB : UPDATE return_requests
+    Controller --> View : redirect()->success('Dieskalasi ke Admin')
+end
+
+View --> Gudang : Tampilkan Status Penyelesaian
+@enduml

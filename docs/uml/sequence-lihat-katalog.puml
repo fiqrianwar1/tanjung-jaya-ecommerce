@@ -1,0 +1,25 @@
+@startuml
+actor Customer
+participant "View (Blade/UI)" as View
+participant "ProductController" as Controller
+participant "Product (Model)" as Model
+database "MySQL" as DB
+
+Customer -> View : Buka Halaman Katalog
+View -> Controller : GET /products
+Controller -> Model : getActiveProducts()
+Model -> DB : SELECT * FROM products WHERE status='active'
+DB --> Model : results
+Model --> Controller : Collection<Product>
+Controller --> View : render('katalog', products)
+View --> Customer : Tampilkan Daftar Produk
+
+Customer -> View : Klik Detail Produk (ID)
+View -> Controller : GET /products/{id}
+Controller -> Model : findOrFail(id)
+Model -> DB : SELECT * FROM products WHERE id=?
+DB --> Model : result
+Model --> Controller : Product Object
+Controller --> View : render('detail', product)
+View --> Customer : Tampilkan Halaman Detail
+@enduml

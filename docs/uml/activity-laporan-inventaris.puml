@@ -1,0 +1,18 @@
+@startuml
+|Manager|
+start
+:Buka Menu Laporan Inventaris;
+
+|Sistem|
+:Ambil Data Kartu Stok Seluruh Produk;
+:Ambil Data Produk Mendekati Habis (Peringatan Stok);
+:Tampilkan Tabel Inventaris;
+
+|Manager|
+:Melihat Status Stok;
+:Filter berdasarkan "Stok Kritis";
+
+|Sistem|
+:Hanya Tampilkan Produk yang Butuh Restock;
+stop
+@enduml

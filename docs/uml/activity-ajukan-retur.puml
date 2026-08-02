@@ -1,0 +1,36 @@
+@startuml
+|Customer|
+start
+:Buka Detail Pesanan;
+:Klik "Ajukan Retur";
+:Pilih Barang yang Diretur;
+:Pilih Alasan (Rusak / Expired);
+:Upload Bukti Foto/Video;
+:Klik "Kirim Pengajuan";
+
+|Sistem|
+:Simpan Data RMA (Return Merchandise Auth);
+:Ubah Status Retur "Menunggu Verifikasi Admin";
+:Kirim Notifikasi ke Admin;
+
+|Admin|
+:Review Pengajuan Retur;
+if (Bukti Valid?) then (Ya)
+  :Setujui Retur;
+  
+  |Sistem|
+  :Ubah Status "Menunggu Pengiriman Barang";
+  :Kirim Instruksi Pengiriman ke Customer;
+  
+  |Customer|
+  :Kirim Barang ke Gudang;
+  :Input Resi Pengiriman Retur;
+else (Tidak)
+  |Admin|
+  :Tolak Retur;
+  
+  |Sistem|
+  :Ubah Status "Retur Ditolak";
+endif
+stop
+@enduml

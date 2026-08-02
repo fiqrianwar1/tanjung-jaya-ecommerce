@@ -1,0 +1,21 @@
+@startuml
+|Gudang|
+start
+:Buka Menu Manajemen Stok;
+:Pilih Produk yang akan diupdate;
+:Input Jumlah Stok Fisik Aktual;
+:Pilih Jenis Update (Masuk / Keluar / Penyesuaian);
+:Masukkan Catatan (Opsional);
+:Klik "Simpan Stok";
+
+|Sistem|
+:Validasi Input Angka;
+if (Valid?) then (Ya)
+  :Update Total Stok Tersedia;
+  :Buat Entri Baru di Kartu Stok (Log Inventaris);
+  :Tampilkan Notifikasi Sukses;
+else (Tidak)
+  :Tampilkan Pesan Error;
+endif
+stop
+@enduml

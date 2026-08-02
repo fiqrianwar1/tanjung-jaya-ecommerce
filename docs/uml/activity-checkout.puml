@@ -1,0 +1,54 @@
+@startuml
+|Customer|
+start
+:Pilih Produk;
+:Klik "Tambah ke Keranjang";
+
+|Sistem|
+:Validasi Stok Produk;
+if (Stok Tersedia?) then (Ya)
+  :Tambahkan ke Keranjang (Session/DB);
+  :Tampilkan Notifikasi Sukses;
+else (Tidak)
+  :Tampilkan Notifikasi "Stok Habis";
+  stop
+endif
+
+|Customer|
+:Buka Keranjang Belanja;
+:Klik "Checkout";
+
+|Sistem|
+:Hitung Total Harga & Berat;
+:Minta Alamat Pengiriman;
+
+|Customer|
+:Isi/Pilih Alamat Pengiriman;
+
+|Sistem|
+:Panggil API Ongkir (RajaOngkir);
+:Tampilkan Pilihan Kurir & Biaya;
+
+|Customer|
+:Pilih Kurir;
+:Pilih Metode Pembayaran;
+:Klik "Bayar Sekarang";
+
+|Sistem|
+:Buat Order ID (Status: Menunggu Pembayaran);
+:Kirim Data ke Payment Gateway (Midtrans);
+:Tampilkan Halaman Pembayaran (Snap);
+
+|Customer|
+:Selesaikan Pembayaran;
+
+|Sistem|
+:Terima Webhook dari Midtrans;
+if (Pembayaran Valid?) then (Ya)
+  :Ubah Status Order menjadi "Dibayar";
+  :Kurangi Stok Fisik;
+else (Tidak/Expired)
+  :Ubah Status Order menjadi "Dibatalkan";
+endif
+stop
+@enduml

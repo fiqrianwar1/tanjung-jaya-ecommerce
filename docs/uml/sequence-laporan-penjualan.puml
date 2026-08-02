@@ -1,0 +1,27 @@
+@startuml
+actor Manager
+participant "View (Blade/UI)" as View
+participant "ReportController" as Controller
+participant "ExportService (Excel/PDF)" as Exporter
+participant "Order (Model)" as Model
+database "MySQL" as DB
+
+Manager -> View : Pilih Rentang Waktu & Format Ekspor
+View -> Controller : GET /manager/reports/sales
+
+Controller -> Model : getSalesByDate(start, end)
+Model -> DB : SELECT * FROM orders WHERE date BETWEEN...
+DB --> Model : sales_data
+
+alt Format Ekspor == 'Excel'
+    Controller -> Exporter : generateExcel(sales_data)
+    Exporter --> Controller : excel_file
+    Controller --> View : download(excel_file)
+else Format Ekspor == 'PDF'
+    Controller -> Exporter : generatePDF(sales_data)
+    Exporter --> Controller : pdf_file
+    Controller --> View : download(pdf_file)
+else Format Ekspor == 'Tabel Web'
+    Controller --> View : render('report_sales', sales_data)
+end
+@enduml

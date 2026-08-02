@@ -1,0 +1,25 @@
+@startuml
+|Sistem (Cron/Event)|
+start
+:Trigger AI Engine per Customer;
+:Ambil Riwayat Transaksi & Aktivitas Customer;
+:Jalankan Algoritma Collaborative Filtering;
+:Hasilkan Daftar Produk Rekomendasi;
+:Simpan ke Cache/Database;
+
+|Customer|
+:Buka Aplikasi (Beranda/Detail Produk);
+
+|Sistem|
+:Cek Data Rekomendasi untuk Customer;
+if (Data Rekomendasi Ada?) then (Ya)
+  :Tampilkan Section "Mungkin Anda Sukai";
+else (Tidak)
+  :Tampilkan Produk Terlaris (Default);
+endif
+
+|Customer|
+:Melihat Saran Produk;
+:Klik Produk Rekomendasi;
+stop
+@enduml

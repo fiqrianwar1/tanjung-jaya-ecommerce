@@ -1,0 +1,22 @@
+@startuml
+actor Customer
+participant "View (Blade/UI)" as View
+participant "ReturnController" as Controller
+participant "FileStorageService" as Storage
+participant "ReturnRequest (Model)" as Model
+database "MySQL" as DB
+
+Customer -> View : Submit Form Retur & Upload Foto
+View -> Controller : POST /returns
+
+Controller -> Storage : storeImage(file)
+Storage --> Controller : file_path
+
+Controller -> Model : createReturnRequest(data, file_path)
+Model -> DB : INSERT INTO return_requests (status='Menunggu Verifikasi')
+DB --> Model : return_id
+Model --> Controller : ReturnRequest Object
+
+Controller --> View : redirect()->success()
+View --> Customer : Tampilkan Pesan "Pengajuan Retur Berhasil Dikirim"
+@enduml

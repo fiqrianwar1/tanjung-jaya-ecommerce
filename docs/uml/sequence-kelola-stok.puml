@@ -1,0 +1,31 @@
+@startuml
+actor Gudang
+participant "View (Blade/UI)" as View
+participant "InventoryController" as Controller
+participant "Product (Model)" as Model
+participant "StockLog (Model)" as LogModel
+database "MySQL" as DB
+
+Gudang -> View : Buka Menu Stok & Input Data (Produk, Qty, Type)
+View -> Controller : POST /warehouse/stock
+
+Controller -> Controller : validate(request)
+
+alt Valid
+    Controller -> Model : find(product_id)
+    Model -> DB : SELECT * FROM products
+    DB --> Model : Product
+    
+    Controller -> Model : updateStock(qty, type)
+    Model -> DB : UPDATE products SET stock = ...
+    
+    Controller -> LogModel : create(product_id, qty, type, user_id)
+    LogModel -> DB : INSERT INTO stock_logs
+    
+    Controller --> View : redirect()->success()
+    View --> Gudang : Tampilkan Notifikasi Sukses
+else Tidak Valid
+    Controller --> View : redirect()->back()->withErrors()
+    View --> Gudang : Tampilkan Pesan Error Input
+end
+@enduml

@@ -1,0 +1,28 @@
+@startuml
+actor Customer
+participant "View (Blade/UI)" as View
+participant "ReviewController" as Controller
+participant "Review (Model)" as Model
+database "MySQL" as DB
+
+Customer -> View : Submit Form Ulasan (Bintang & Teks)
+View -> Controller : POST /reviews
+
+Controller -> Model : checkExistingReview(user_id, product_id)
+Model -> DB : SELECT count(*) FROM reviews...
+DB --> Model : count
+
+alt count > 0 (Sudah Mengulas)
+    Controller --> View : redirect()->back()->withError('Sudah diulas')
+    View --> Customer : Tampilkan Pesan Error
+else count == 0 (Belum Mengulas)
+    Controller -> Model : create(review_data)
+    Model -> DB : INSERT INTO reviews
+    
+    Controller -> Model : updateProductAverageRating(product_id)
+    Model -> DB : UPDATE products SET rating=avg(...)
+    
+    Controller --> View : redirect()->success()
+    View --> Customer : Tampilkan Pesan Sukses
+end
+@enduml

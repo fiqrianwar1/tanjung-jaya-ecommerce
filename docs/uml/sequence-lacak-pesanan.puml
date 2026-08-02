@@ -1,0 +1,25 @@
+@startuml
+actor Customer
+participant "View (Blade/UI)" as View
+participant "OrderController" as Controller
+participant "ShippingService" as API
+participant "Order (Model)" as Model
+database "MySQL" as DB
+
+Customer -> View : Pilih "Lacak Pesanan" (ID)
+View -> Controller : GET /orders/{id}/track
+Controller -> Model : find(id)
+Model -> DB : SELECT * FROM orders WHERE id=?
+DB --> Model : result
+Model --> Controller : Order Object
+
+alt status == 'Dikirim'
+    Controller -> API : trackWaybill(Order.resi)
+    API --> Controller : tracking_history
+    Controller --> View : render('track', tracking_history)
+else status != 'Dikirim'
+    Controller --> View : render('track', Order.status)
+end
+
+View --> Customer : Tampilkan Informasi Pelacakan
+@enduml

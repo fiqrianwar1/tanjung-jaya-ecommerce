@@ -1,0 +1,29 @@
+@startuml
+actor Admin
+participant "View (Blade/UI)" as View
+participant "AdminReturnController" as Controller
+participant "NotificationService" as Mailer
+participant "ReturnRequest (Model)" as Model
+database "MySQL" as DB
+
+Admin -> View : Klik "Setujui" / "Tolak" pada Form Retur
+View -> Controller : POST /admin/returns/{id}/decision
+
+Controller -> Model : find(id)
+Model -> DB : SELECT * FROM return_requests
+DB --> Model : ReturnRequest Object
+
+alt Disetujui
+    Controller -> Model : updateStatus('Menunggu Pengiriman Customer')
+    Model -> DB : UPDATE return_requests
+    Controller -> Mailer : sendReturnInstructionsEmail(Customer)
+    Controller --> View : redirect()->success()
+else Ditolak
+    Controller -> Model : updateStatus('Ditolak', reason)
+    Model -> DB : UPDATE return_requests
+    Controller -> Mailer : sendReturnRejectionEmail(Customer)
+    Controller --> View : redirect()->success()
+end
+
+View --> Admin : Tampilkan Status Pembaruan
+@enduml

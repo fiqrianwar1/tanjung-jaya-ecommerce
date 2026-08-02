@@ -1,0 +1,16 @@
+@startuml
+|Sistem (Cron Job)|
+start
+:Trigger Cron Job (Berjalan Tiap 1 Jam);
+:Cari Data Keranjang yang Tidak Ada Transaksi > 24 Jam;
+
+if (Ditemukan Keranjang Terabaikan?) then (Ya)
+  :Ambil Data Email Customer;
+  :Ambil Data Produk di Keranjang;
+  :Kirim Email "Reminder: Keranjang Anda Menunggu";
+  :Tandai Keranjang "Reminder Terkirim" di Database;
+else (Tidak)
+  :Tidak Melakukan Apa-apa;
+endif
+stop
+@enduml

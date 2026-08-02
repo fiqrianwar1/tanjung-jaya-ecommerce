@@ -1,0 +1,23 @@
+@startuml
+actor Admin
+participant "View (Blade/UI)" as View
+participant "AdminReviewController" as Controller
+participant "Review (Model)" as Model
+database "MySQL" as DB
+
+Admin -> View : Pilih Aksi pada Ulasan (Sembunyikan/Balas)
+
+alt Aksi == Sembunyikan
+    View -> Controller : POST /admin/reviews/{id}/hide
+    Controller -> Model : updateStatus('Hidden')
+    Model -> DB : UPDATE reviews SET status='Hidden'
+    Controller --> View : redirect()->success()
+    View --> Admin : Tampilkan "Ulasan Disembunyikan"
+else Aksi == Balas
+    View -> Controller : POST /admin/reviews/{id}/reply
+    Controller -> Model : addAdminReply(reply_text)
+    Model -> DB : UPDATE reviews SET admin_reply=?
+    Controller --> View : redirect()->success()
+    View --> Admin : Tampilkan "Balasan Disimpan"
+end
+@enduml

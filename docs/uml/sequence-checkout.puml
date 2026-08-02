@@ -1,0 +1,40 @@
+@startuml
+actor Customer
+participant "View (Blade/UI)" as View
+participant "CheckoutController" as Controller
+participant "ShippingService (RajaOngkir)" as Shipping
+participant "PaymentService (Midtrans)" as Payment
+participant "Order (Model)" as Model
+database "MySQL" as DB
+
+Customer -> View : Submit Checkout Form
+View -> Controller : POST /checkout
+
+Controller -> Shipping : calculateShippingCost(origin, destination, weight)
+Shipping --> Controller : shipping_cost
+
+Controller -> Controller : hitungTotal(cart_total + shipping_cost)
+
+Controller -> Model : createOrder(data)
+Model -> DB : INSERT INTO orders
+DB --> Model : order_id
+Model --> Controller : Order Object
+
+Controller -> Payment : generatePaymentUrl(Order)
+Payment --> Controller : snap_url
+
+Controller --> View : redirect(snap_url)
+View --> Customer : Tampilkan Halaman Pembayaran
+
+Customer -> Payment : Selesaikan Pembayaran
+Payment -> Controller : Webhook (POST /midtrans/callback)
+
+alt Pembayaran Sukses
+    Controller -> Model : updateStatus('Dibayar')
+    Model -> DB : UPDATE orders SET status='Dibayar'
+    Controller -> Model : deductStock()
+else Pembayaran Gagal/Expired
+    Controller -> Model : updateStatus('Dibatalkan')
+    Model -> DB : UPDATE orders SET status='Dibatalkan'
+end
+@enduml

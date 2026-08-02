@@ -1,0 +1,21 @@
+@startuml
+|Manager|
+start
+:Login sebagai Manager;
+:Masuk ke Halaman Dashboard Utama;
+
+|Sistem|
+:Ambil Data Transaksi Bulan Berjalan;
+:Ambil Data Stok Kritis;
+:Ambil Data Pertumbuhan Penjualan;
+:Render Grafik (Chart.js / ApexCharts);
+:Tampilkan Widget KPI (Total Pendapatan, Order Sukses);
+
+|Manager|
+:Melihat Performa Bisnis Secara Menyeluruh;
+:Klik Filter Tanggal (Opsional);
+
+|Sistem|
+:Muat Ulang Grafik Sesuai Tanggal;
+stop
+@enduml

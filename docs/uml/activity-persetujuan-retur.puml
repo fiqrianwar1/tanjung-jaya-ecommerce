@@ -1,0 +1,25 @@
+@startuml
+|Admin|
+start
+:Buka Halaman Pengajuan Retur (RMA);
+:Pilih Data Pengajuan (Status: Menunggu Verifikasi);
+
+|Sistem|
+:Tampilkan Detail Pesanan, Alasan, & Foto Bukti;
+
+|Admin|
+:Review Bukti Fisik/Foto;
+if (Alasan & Bukti Memenuhi Syarat?) then (Ya)
+  :Klik "Setujui Retur";
+  |Sistem|
+  :Update Status "Menunggu Pengiriman Customer";
+  :Kirim Email Instruksi Retur ke Customer;
+else (Tidak)
+  :Input Alasan Penolakan;
+  :Klik "Tolak Retur";
+  |Sistem|
+  :Update Status "Retur Ditolak";
+  :Kirim Email Penolakan ke Customer;
+endif
+stop
+@enduml

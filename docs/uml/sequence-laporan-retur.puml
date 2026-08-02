@@ -1,0 +1,17 @@
+@startuml
+actor Manager
+participant "View (Blade/UI)" as View
+participant "QualityReportController" as Controller
+participant "ReturnRequest (Model)" as Model
+database "MySQL" as DB
+
+Manager -> View : Akses Laporan Retur (Pilih Bulan)
+View -> Controller : GET /manager/reports/quality
+
+Controller -> Model : getReturnStats(month)
+Model -> DB : SELECT count(*), reason FROM return_requests GROUP BY reason
+DB --> Model : return_stats
+
+Controller --> View : render('report_quality', return_stats)
+View --> Manager : Tampilkan Pareto/Bar Chart Alasan Retur
+@enduml

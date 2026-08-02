@@ -1,0 +1,17 @@
+@startuml
+actor Manager
+participant "View (Blade/UI)" as View
+participant "InventoryReportController" as Controller
+participant "Product (Model)" as Model
+database "MySQL" as DB
+
+Manager -> View : Klik Filter "Stok Kritis"
+View -> Controller : GET /manager/reports/inventory?filter=critical
+
+Controller -> Model : getCriticalInventory()
+Model -> DB : SELECT * FROM products WHERE stock < safe_limit
+DB --> Model : critical_stocks
+
+Controller --> View : render('report_inventory', critical_stocks)
+View --> Manager : Tampilkan Hanya Produk Butuh Restock
+@enduml

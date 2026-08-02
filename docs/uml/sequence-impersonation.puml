@@ -1,0 +1,20 @@
+@startuml
+actor Admin
+participant "View (Blade/UI)" as View
+participant "ImpersonationController" as Controller
+participant "Auth (Laravel Facade)" as Auth
+participant "AuditService" as Audit
+database "MySQL" as DB
+
+Admin -> View : Klik "Login As Customer X"
+View -> Controller : POST /admin/impersonate/{user_id}
+
+Controller -> Audit : logAction('Impersonated User', user_id, admin_id)
+Audit -> DB : INSERT INTO audit_logs
+
+Controller -> Auth : loginUsingId(user_id)
+Auth -> DB : Set Session Auth Cookie for User ID
+
+Controller -> View : redirect('/')
+View --> Admin : Tampilkan Beranda dengan Session Customer (Bisa Troubleshooting)
+@enduml

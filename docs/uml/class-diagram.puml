@@ -1,0 +1,162 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+package "Sistem E-Commerce Tanjung Jaya - Class Diagram" {
+
+    class User {
+      - id: int
+      - name: string
+      - email: string
+      - password: string
+      - role: enum(Customer, Admin, Gudang, Manager)
+      + login()
+      + logout()
+    }
+
+    class Product {
+      - id: int
+      - category_id: int
+      - name: string
+      - description: text
+      - price: double
+      - stock: int
+      - bad_stock: int
+      - status: enum(active, inactive)
+      + getActiveProducts()
+      + findOrFail(id)
+      + deductStock(qty)
+      + incrementBadStock(qty)
+      + updateStock(qty, type)
+      + getCriticalInventory()
+    }
+
+    class Category {
+      - id: int
+      - name: string
+    }
+
+    class Order {
+      - id: int
+      - user_id: int
+      - total: double
+      - shipping_cost: double
+      - courier: string
+      - resi: string
+      - status: string
+      + createOrder(data)
+      + updateStatus(status, resi)
+      + getMonthlyRevenue()
+      + getSalesByDate(start, end)
+    }
+
+    class OrderItem {
+      - id: int
+      - order_id: int
+      - product_id: int
+      - qty: int
+      - price: double
+    }
+
+    class Review {
+      - id: int
+      - user_id: int
+      - product_id: int
+      - rating: int
+      - comment: text
+      - admin_reply: text
+      - status: enum(published, hidden)
+      + checkExistingReview()
+      + updateStatus(status)
+      + addAdminReply(reply)
+    }
+
+    class ReturnRequest {
+      - id: int
+      - order_id: int
+      - reason: string
+      - proof_image: string
+      - status: string
+      - notes: string
+      + createReturnRequest(data, file)
+      + updateStatus(status, notes)
+      + getReturnStats(month)
+    }
+
+    class AuditLog {
+      - id: int
+      - user_id: int
+      - action: string
+      - target_id: int
+      - old_data: json
+      - new_data: json
+      + filterLogs(filters)
+    }
+
+    class StockLog {
+      - id: int
+      - product_id: int
+      - user_id: int
+      - type: enum(in, out, adjustment)
+      - qty: int
+    }
+
+    class Cart {
+      - id: int
+      - user_id: int
+      - updated_at: timestamp
+      - emailed: boolean
+      + getAbandonedCarts()
+      + markAsEmailed(id)
+    }
+
+    class CartItem {
+      - id: int
+      - cart_id: int
+      - product_id: int
+      - qty: int
+    }
+
+    class UserActivity {
+      - id: int
+      - user_id: int
+      - product_id: int
+      - action: string
+      + getHistory(user_id)
+    }
+
+    class ReportSubscription {
+      - id: int
+      - manager_id: int
+      - report_type: string
+      - frequency: string
+      + updateOrCreate()
+    }
+
+    ' === Relasi Antar Kelas ===
+
+    User "1" -- "0..*" Order : makes >
+    Order "1" *-- "1..*" OrderItem : contains >
+    Product "1" -- "0..*" OrderItem : included in <
+
+    User "1" -- "0..*" Review : writes >
+    Product "1" -- "0..*" Review : receives >
+
+    Order "1" -- "0..1" ReturnRequest : has >
+
+    User "1" -- "1" Cart : owns >
+    Cart "1" *-- "0..*" CartItem : contains >
+    Product "1" -- "0..*" CartItem : added to <
+
+    Category "1" -- "0..*" Product : classifies >
+
+    User "1" -- "0..*" AuditLog : performs (Admin/Manager) >
+    User "1" -- "0..*" StockLog : updates (Gudang) >
+    Product "1" -- "0..*" StockLog : logged in <
+
+    User "1" -- "0..*" UserActivity : does (Customer) >
+    Product "1" -- "0..*" UserActivity : targeted in <
+
+    User "1" -- "0..*" ReportSubscription : subscribes (Manager) >
+}
+@enduml

@@ -1,0 +1,24 @@
+@startuml
+|Gudang|
+start
+:Buka Daftar Pesanan (Status: Diproses Gudang);
+:Pilih Pesanan untuk Dipacking (Bisa Multiple/Batch);
+
+|Sistem|
+:Tampilkan Detail Packing List & Label Pengiriman;
+
+|Gudang|
+:Proses Packing Barang Fisik;
+:Input/Scan Nomor Resi Ekspedisi;
+:Klik "Tandai Dikirim";
+
+|Sistem|
+:Validasi Nomor Resi;
+if (Resi Valid?) then (Ya)
+  :Ubah Status Pesanan menjadi "Dikirim";
+  :Kirim Notifikasi/Email Resi ke Customer;
+else (Tidak)
+  :Tampilkan Error "Format Resi Salah";
+endif
+stop
+@enduml

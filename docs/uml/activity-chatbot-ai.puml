@@ -1,0 +1,25 @@
+@startuml
+|Customer|
+start
+:Buka Widget Chatbot di Ujung Kanan Bawah;
+:Ketik Pesan / Pertanyaan (FAQ/Resi);
+
+|Sistem (Chatbot AI)|
+:Menerima Input Teks;
+:Proses Natural Language Processing (NLP);
+if (Maksud Dikenali?) then (Ya)
+  if (Tanya Resi?) then (Ya)
+    :Query Database Pesanan Customer;
+    :Balas Status Resi Terakhir;
+  else (Tanya Produk/FAQ?)
+    :Cari Jawaban dari Knowledge Base / Rekomendasi;
+    :Kirim Teks Balasan;
+  endif
+else (Tidak)
+  :Kirim Balasan "Maaf, saya tidak mengerti. Hubungi Admin.";
+endif
+
+|Customer|
+:Menerima Balasan Chatbot;
+stop
+@enduml

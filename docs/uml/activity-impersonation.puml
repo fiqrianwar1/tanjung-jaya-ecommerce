@@ -1,0 +1,21 @@
+@startuml
+|Admin|
+start
+:Buka Halaman Data Pelanggan;
+:Cari Pelanggan yang Bermasalah;
+:Klik Tombol "Login As...";
+
+|Sistem|
+:Catat Aksi di Audit Trail (Keamanan);
+:Buat Session Sementara sebagai Customer;
+:Redirect ke Tampilan Beranda Customer;
+
+|Admin (via Session Customer)|
+:Lakukan Pengecekan / Troubleshooting;
+:Klik "Kembali ke Admin";
+
+|Sistem|
+:Hapus Session Sementara;
+:Kembalikan ke Halaman Admin;
+stop
+@enduml

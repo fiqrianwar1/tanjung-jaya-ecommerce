@@ -1,0 +1,14 @@
+@startuml
+|Manager|
+start
+:Buka Pengaturan Akun / Laporan;
+:Klik "Langganan Laporan (Email)";
+:Pilih Jenis Laporan (Penjualan / Inventaris);
+:Pilih Frekuensi (Harian / Mingguan / Bulanan);
+:Klik "Simpan";
+
+|Sistem|
+:Simpan Preferensi Jadwal Laporan Manager ke Database;
+:Tampilkan Notifikasi "Jadwal Berhasil Disimpan";
+stop
+@enduml

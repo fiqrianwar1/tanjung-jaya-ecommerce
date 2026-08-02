@@ -1,0 +1,25 @@
+@startuml
+|Admin|
+start
+:Buka Halaman Ulasan Produk;
+:Filter Ulasan yang Belum Dibalas;
+
+|Sistem|
+:Tampilkan Daftar Ulasan;
+
+|Admin|
+:Pilih Ulasan;
+if (Ulasan Mengandung Spam/Kasar?) then (Ya)
+  :Klik "Sembunyikan / Hapus Ulasan";
+  |Sistem|
+  :Update Status Ulasan menjadi "Hidden";
+else (Tidak)
+  |Admin|
+  :Ketik Balasan Admin;
+  :Klik "Kirim Balasan";
+  |Sistem|
+  :Simpan Balasan;
+  :Tampilkan Balasan di Halaman Produk;
+endif
+stop
+@enduml

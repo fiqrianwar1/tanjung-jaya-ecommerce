@@ -1,0 +1,22 @@
+@startuml
+actor Manager
+participant "View (Blade/UI)" as View
+participant "DashboardController" as Controller
+participant "Order (Model)" as OrderModel
+participant "Product (Model)" as ProductModel
+database "MySQL" as DB
+
+Manager -> View : Akses Dashboard
+View -> Controller : GET /manager/dashboard
+
+Controller -> OrderModel : getMonthlyRevenue()
+OrderModel -> DB : SELECT SUM(total) FROM orders WHERE status='Selesai'...
+DB --> OrderModel : revenue
+
+Controller -> ProductModel : getCriticalStock()
+ProductModel -> DB : SELECT * FROM products WHERE stock < threshold
+DB --> ProductModel : critical_products
+
+Controller --> View : render('dashboard', data)
+View --> Manager : Tampilkan Grafik & Metrik (Chart.js)
+@enduml

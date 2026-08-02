@@ -1,0 +1,26 @@
+@startuml
+|Customer|
+start
+:Buka Menu "Pesanan Saya";
+
+|Sistem|
+:Ambil Daftar Pesanan Customer;
+:Tampilkan Daftar Pesanan;
+
+|Customer|
+:Pilih Salah Satu Pesanan;
+
+|Sistem|
+:Ambil Detail Status Pesanan;
+if (Status = Dikirim?) then (Ya)
+  :Tampilkan Nomor Resi;
+  :Panggil API Lacak Resi (Ekspedisi);
+  :Tampilkan History Perjalanan Paket;
+else (Tidak)
+  :Tampilkan Status Saat Ini (Misal: Diproses);
+endif
+
+|Customer|
+:Lihat Informasi Pelacakan;
+stop
+@enduml

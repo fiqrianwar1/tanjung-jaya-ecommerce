@@ -1,0 +1,29 @@
+@startuml
+actor Admin
+participant "View (Blade/UI)" as View
+participant "AdminProductController" as Controller
+participant "AuditService" as Audit
+participant "Product (Model)" as Model
+database "MySQL" as DB
+
+Admin -> View : Submit Form Produk (POST /admin/products)
+View -> Controller : store(request)
+
+Controller -> Controller : validate(request)
+
+alt Validasi Lolos
+    Controller -> Model : create(validated_data)
+    Model -> DB : INSERT INTO products
+    DB --> Model : product_id
+    Model --> Controller : Product Object
+    
+    Controller -> Audit : logAction('Create Product', product_id, admin_id)
+    Audit -> DB : INSERT INTO audit_logs
+    
+    Controller --> View : redirect()->success()
+    View --> Admin : Tampilkan Pesan "Sukses"
+else Validasi Gagal
+    Controller --> View : redirect()->back()->withErrors()
+    View --> Admin : Tampilkan Pesan Error Validasi
+end
+@enduml

@@ -1,0 +1,16 @@
+@startuml
+|Manager|
+start
+:Buka Menu Laporan Kualitas & Retur;
+:Pilih Bulan Laporan;
+
+|Sistem|
+:Hitung Persentase Barang Retur vs Total Terjual;
+:Kelompokkan Alasan Retur (Rusak/Expired);
+:Tampilkan Grafik Pareto / Bar Chart Retur Terbanyak;
+
+|Manager|
+:Menganalisa Kualitas Produk dan Supplier;
+:Export Data ke Excel untuk Evaluasi Lanjut;
+stop
+@enduml

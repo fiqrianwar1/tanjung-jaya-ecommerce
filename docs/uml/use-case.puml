@@ -1,0 +1,78 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+skinparam actorStyle hollow
+
+actor "Customer" as C
+actor "Admin" as A
+actor "Gudang (Warehouse)" as G
+actor "Manager" as M
+
+rectangle "Sistem E-Commerce Tanjung Jaya" {
+    
+    ' Customer Use Cases
+    usecase "Lihat Katalog Produk & Detail" as UC_C1
+    usecase "Mendapat Rekomendasi Produk (AI)" as UC_C2
+    usecase "Tambah ke Keranjang & Checkout" as UC_C3
+    usecase "Lacak Status Pesanan" as UC_C4
+    usecase "Beri Ulasan & Rating" as UC_C5
+    usecase "Ajukan Retur Barang" as UC_C6
+    usecase "Interaksi dengan Chatbot AI" as UC_C7
+    
+    ' Admin Use Cases
+    usecase "Kelola Produk & Kategori" as UC_A1
+    usecase "Verifikasi Pesanan & Pembayaran" as UC_A2
+    usecase "Kelola Data Pelanggan" as UC_A3
+    usecase "Moderasi Ulasan" as UC_A4
+    usecase "Verifikasi & Persetujuan Retur (RMA)" as UC_A5
+    usecase "Pantau Log Aktivitas (Audit Trail)" as UC_A6
+    usecase "Login As Customer (Impersonation)" as UC_A7
+    
+    ' Gudang Use Cases
+    usecase "Kelola Stok Barang Aktual" as UC_G1
+    usecase "Proses Pengiriman (Batch/Barcode)" as UC_G2
+    usecase "Terima & Catat Fisik Retur" as UC_G3
+    
+    ' Manager Use Cases
+    usecase "Lihat Dashboard Eksekutif" as UC_M1
+    usecase "Lihat Laporan Penjualan (Harian/Bulanan)" as UC_M2
+    usecase "Lihat Laporan Kualitas & Retur" as UC_M3
+    usecase "Lihat Laporan Inventaris & Peringatan Stok" as UC_M4
+    usecase "Berlangganan Laporan Otomatis (Email)" as UC_M5
+    
+    ' Sistem otomatis (Opsional untuk digambarkan, biasanya sebagai Use Case yang di trigger waktu/sistem)
+    usecase "Abandoned Cart Recovery (Sistem/Cron)" as UC_SYS1
+}
+
+C --> UC_C1
+C --> UC_C2
+C --> UC_C3
+C --> UC_C4
+C --> UC_C5
+C --> UC_C6
+C --> UC_C7
+
+A --> UC_A1
+A --> UC_A2
+A --> UC_A3
+A --> UC_A4
+A --> UC_A5
+A --> UC_A6
+A --> UC_A7
+
+G --> UC_G1
+G --> UC_G2
+G --> UC_G3
+
+M --> UC_M1
+M --> UC_M2
+M --> UC_M3
+M --> UC_M4
+M --> UC_M5
+
+' Relasi tambahan untuk menggambarkan dependensi alur
+UC_C3 .> UC_SYS1 : <<includes>> (Sistem trigger jika tidak checkout)
+UC_A5 <.. UC_C6 : <<extends>> (Admin verifikasi retur dari Customer)
+UC_G3 <.. UC_A5 : <<extends>> (Gudang terima barang setelah disetujui)
+
+@enduml

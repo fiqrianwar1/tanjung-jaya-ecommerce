@@ -1,0 +1,27 @@
+@startuml
+|Gudang|
+start
+:Menerima Paket Retur dari Kurir;
+:Buka Menu "Penerimaan Retur" di Sistem;
+:Input Nomor Pesanan / Nomor RMA;
+
+|Sistem|
+:Tampilkan Detail RMA (Status: Menunggu Pengiriman Customer);
+
+|Gudang|
+:Cek Fisik Barang dengan Data Pengajuan;
+if (Barang Sesuai?) then (Ya)
+  :Ubah Status RMA menjadi "Selesai (Retur Diterima)";
+  :Update Stok Gudang (Kategori: Bad Stock / Defect);
+  |Sistem|
+  :Kirim Email Konfirmasi ke Customer;
+  :Kirim Notifikasi ke Admin (Untuk Refund/Tukar);
+else (Tidak Sesuai)
+  |Gudang|
+  :Input Catatan Ketidaksesuaian;
+  :Tandai "Retur Bermasalah";
+  |Sistem|
+  :Eskalasi ke Admin untuk Investigasi;
+endif
+stop
+@enduml

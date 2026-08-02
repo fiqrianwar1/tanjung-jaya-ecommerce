@@ -1,0 +1,20 @@
+@startuml
+|Customer|
+start
+:Buka Pesanan dengan Status "Selesai";
+:Klik Tombol "Beri Ulasan";
+:Isi Bintang (1-5) dan Teks Ulasan;
+:Upload Foto (Opsional);
+:Klik "Kirim";
+
+|Sistem|
+:Validasi Input Ulasan;
+if (Sudah Pernah Mengulas?) then (Ya)
+  :Tampilkan Pesan Error;
+else (Tidak)
+  :Simpan Ulasan ke Database;
+  :Update Rating Rata-rata Produk;
+  :Tampilkan Pesan Sukses;
+endif
+stop
+@enduml

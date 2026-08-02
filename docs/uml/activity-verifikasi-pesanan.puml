@@ -1,0 +1,27 @@
+@startuml
+|Admin|
+start
+:Buka Halaman Pesanan (Status: Dibayar/Menunggu Verifikasi);
+:Klik Detail Pesanan;
+:Cek Bukti Pembayaran dari Payment Gateway / Manual;
+
+|Sistem|
+:Tampilkan Detail Order dan Bukti Transfer;
+
+|Admin|
+if (Pembayaran Sesuai?) then (Ya)
+  :Klik "Verifikasi & Teruskan ke Gudang";
+  
+  |Sistem|
+  :Ubah Status "Diproses Gudang";
+  :Kirim Notifikasi ke Gudang & Customer;
+else (Tidak)
+  |Admin|
+  :Klik "Tolak Pembayaran";
+  
+  |Sistem|
+  :Ubah Status "Dibatalkan";
+  :Kirim Notifikasi Alasan Penolakan;
+endif
+stop
+@enduml

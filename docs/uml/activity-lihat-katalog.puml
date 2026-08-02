@@ -1,0 +1,29 @@
+@startuml
+|Customer|
+start
+:Buka Aplikasi Web;
+:Akses Halaman Beranda/Katalog;
+:Lihat Daftar Produk;
+
+|Sistem|
+:Ambil Data Produk & Kategori dari Database;
+:Tampilkan Katalog;
+
+|Customer|
+:Pilih Kategori atau Cari Produk (Search);
+
+|Sistem|
+:Filter Data Sesuai Keyword/Kategori;
+:Tampilkan Hasil Pencarian;
+
+|Customer|
+:Klik Salah Satu Produk;
+
+|Sistem|
+:Ambil Detail Produk (Harga, Stok, Deskripsi);
+:Tampilkan Halaman Detail Produk;
+
+|Customer|
+:Melihat Detail Produk;
+stop
+@enduml

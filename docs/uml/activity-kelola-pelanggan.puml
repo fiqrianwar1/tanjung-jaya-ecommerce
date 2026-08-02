@@ -1,0 +1,22 @@
+@startuml
+|Admin|
+start
+:Buka Halaman Data Pelanggan;
+
+|Sistem|
+:Ambil Daftar Pelanggan dari Database;
+:Tampilkan Tabel Pelanggan;
+
+|Admin|
+:Gunakan Filter/Pencarian;
+
+|Sistem|
+:Tampilkan Hasil Pencarian;
+
+|Admin|
+:Pilih Satu Pelanggan untuk Detail;
+
+|Sistem|
+:Tampilkan Profil, Riwayat Order, dan Status Akun;
+stop
+@enduml

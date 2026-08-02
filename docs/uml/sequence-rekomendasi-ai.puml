@@ -1,0 +1,30 @@
+@startuml
+actor Customer
+participant "View (Blade/UI)" as View
+participant "RecommendationController" as Controller
+participant "AIService" as Service
+participant "UserActivity (Model)" as Model
+database "MySQL" as DB
+
+Customer -> View : Buka Beranda
+View -> Controller : GET /home
+Controller -> Service : getRecommendations(userId)
+Service -> Model : getHistory(userId)
+Model -> DB : SELECT * FROM user_activities WHERE user_id=?
+DB --> Model : history_data
+Model --> Service : Collection<Activity>
+Service -> Service : Run Collaborative Filtering
+Service --> Controller : List<RecommendedProducts>
+
+alt Data Rekomendasi Tersedia
+    Controller --> View : render('home', recommendations)
+    View --> Customer : Tampilkan Section "Mungkin Anda Sukai"
+else Data Rekomendasi Kosong
+    Controller -> Model : getTopSellingProducts()
+    Model -> DB : Query Top Selling
+    DB --> Model : results
+    Model --> Controller : List<Products>
+    Controller --> View : render('home', top_products)
+    View --> Customer : Tampilkan Produk Terlaris
+end
+@enduml

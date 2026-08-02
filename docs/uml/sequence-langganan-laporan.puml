@@ -1,0 +1,17 @@
+@startuml
+actor Manager
+participant "View (Blade/UI)" as View
+participant "SubscriptionController" as Controller
+participant "ReportSubscription (Model)" as Model
+database "MySQL" as DB
+
+Manager -> View : Pilih Jadwal Laporan & Simpan
+View -> Controller : POST /manager/reports/subscribe
+
+Controller -> Model : updateOrCreate(manager_id, report_type, frequency)
+Model -> DB : REPLACE INTO report_subscriptions...
+DB --> Model : result
+
+Controller --> View : redirect()->success()
+View --> Manager : Tampilkan "Jadwal Disimpan"
+@enduml

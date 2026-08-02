@@ -1,0 +1,25 @@
+@startuml
+participant "Laravel Scheduler (Cron)" as Scheduler
+participant "AbandonedCartJob" as Job
+participant "MailService" as Mailer
+participant "Cart (Model)" as Model
+database "MySQL" as DB
+
+Scheduler -> Job : handle() (Tiap 1 Jam)
+
+Job -> Model : getAbandonedCarts(>24 Hours)
+Model -> DB : SELECT * FROM carts WHERE updated_at < NOW() - 24h AND emailed=false
+DB --> Model : abandoned_carts
+
+alt Ada Keranjang Terabaikan
+    loop Untuk Setiap Cart
+        Job -> Mailer : sendReminderEmail(Cart.User)
+        Mailer -> "Customer (Email)" : Email Terkirim
+        
+        Job -> Model : markAsEmailed(Cart.id)
+        Model -> DB : UPDATE carts SET emailed=true
+    end
+else Tidak Ada Keranjang Terabaikan
+    Job -> Job : Selesai (Do nothing)
+end
+@enduml

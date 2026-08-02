@@ -1,0 +1,19 @@
+@startuml
+|Manager|
+start
+:Buka Menu Laporan Penjualan;
+:Pilih Rentang Waktu (Misal: 1 Jan - 31 Jan);
+:Pilih Format Ekspor (Tabel / PDF / Excel);
+:Klik "Tampilkan Laporan";
+
+|Sistem|
+:Query Data Penjualan Sukses;
+:Hitung Total Pendapatan & Pajak;
+if (Format Ekspor?) then (Tabel)
+  :Tampilkan Hasil di Halaman Web;
+else (Excel / PDF)
+  :Generate File Excel (PhpSpreadsheet) / PDF (DomPDF);
+  :Download File ke Komputer Manager;
+endif
+stop
+@enduml

@@ -1,0 +1,30 @@
+/vendor/
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Laravel 4 specific
+bootstrap/compiled.php
+app/storage/
+
+# Laravel 5 & newer
+public/storage
+public/hot
+public/build
+
+storage/*.key
+.env
+.env.backup
+.env.production
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+.php_cs.cache
+.phpunit.cache
+
+# Custom / OS Specific
+.DS_Store
+Thumbs.db
+
+# Agent credentials
+.agent/skills/laravel-setup/credentials

@@ -1,0 +1,17 @@
+@startuml
+|Admin|
+start
+:Buka Halaman Audit Trail;
+:Pilih Filter Waktu / Aktor / Modul;
+
+|Sistem|
+:Ambil Data Log Aktivitas (DB);
+:Tampilkan Tabel Audit Trail;
+
+|Admin|
+:Klik Detail Log;
+
+|Sistem|
+:Tampilkan Perubahan Data (Data Lama vs Data Baru);
+stop
+@enduml

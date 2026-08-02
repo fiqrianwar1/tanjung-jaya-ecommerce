@@ -1,0 +1,29 @@
+@startuml
+actor Admin
+participant "View (Blade/UI)" as View
+participant "AdminOrderController" as Controller
+participant "NotificationService" as Mailer
+participant "Order (Model)" as Model
+database "MySQL" as DB
+
+Admin -> View : Klik "Verifikasi & Teruskan ke Gudang"
+View -> Controller : POST /admin/orders/{id}/verify
+Controller -> Model : find(id)
+Model -> DB : SELECT * FROM orders WHERE id=?
+DB --> Model : Order Object
+
+alt Bukti Pembayaran Valid
+    Controller -> Model : updateStatus('Diproses Gudang')
+    Model -> DB : UPDATE orders SET status='Diproses Gudang'
+    
+    Controller -> Mailer : sendOrderProcessedEmail(Customer)
+    Mailer -> Customer : Email Terkirim
+    
+    Controller --> View : redirect()->success()
+else Pembayaran Tidak Valid
+    Controller -> Model : updateStatus('Dibatalkan')
+    Model -> DB : UPDATE orders SET status='Dibatalkan'
+    Controller --> View : redirect()->with('message', 'Ditolak')
+end
+View --> Admin : Tampilkan Status Pembaruan
+@enduml
