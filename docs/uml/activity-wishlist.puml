@@ -1,0 +1,58 @@
+@startuml activity-wishlist
+skinparam style strictuml
+skinparam backgroundColor #FFFFFF
+skinparam activity {
+  BackgroundColor #E8F5E9
+  BorderColor #2E7D32
+  ArrowColor #2E7D32
+}
+
+title Alur Aktivitas - Kelola Wishlist (Barang Disukai)
+
+|Customer|
+start
+:Membuka Halaman Katalog / Detail Produk;
+:Melihat Produk yang Diminati;
+:Klik Tombol "Tambahkan ke Wishlist";
+
+|Sistem|
+if (Apakah Customer sudah login?) then (Ya)
+  :Cek apakah produk sudah ada di Wishlist;
+  if (Sudah ada?) then (Ya)
+    :Hapus produk dari Wishlist (Toggle);
+    :Tampilkan notifikasi "Dihapus dari Wishlist";
+  else (Belum)
+    :Simpan produk ke tabel Wishlist;
+    :Tampilkan notifikasi "Berhasil ditambahkan ke Wishlist";
+  endif
+else (Tidak)
+  :Redirect ke Halaman Login;
+  |Customer|
+  :Melakukan Login;
+  |Sistem|
+  :Kembalikan ke halaman sebelumnya;
+  :Simpan produk ke tabel Wishlist;
+  :Tampilkan notifikasi "Berhasil ditambahkan ke Wishlist";
+endif
+
+|Customer|
+:Membuka Halaman Daftar Wishlist;
+|Sistem|
+:Tampilkan daftar produk yang disukai;
+
+|Customer|
+if (Aksi selanjutnya?) then (Beli Produk)
+  :Klik "Masukkan Keranjang" dari Wishlist;
+  |Sistem|
+  :Tambahkan produk ke Keranjang Belanja;
+  :Tampilkan notifikasi "Berhasil ditambahkan ke keranjang";
+else (Hapus Produk)
+  |Customer|
+  :Klik "Hapus dari Wishlist";
+  |Sistem|
+  :Hapus data dari tabel Wishlist;
+  :Refresh daftar Wishlist;
+endif
+
+stop
+@enduml

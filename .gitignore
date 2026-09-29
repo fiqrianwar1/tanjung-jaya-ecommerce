@@ -26,5 +26,11 @@ Homestead.yaml
 .DS_Store
 Thumbs.db
 
+# Artefak hasil pengujian Playwright (laporan/video/jejak) — folder screenshot tetap disimpan
+/docs/testing/playwright-report/
+/docs/testing/playwright-results/
+/test-results/
+/playwright-report/
+
 # Agent credentials
 .agent/skills/laravel-setup/credentials

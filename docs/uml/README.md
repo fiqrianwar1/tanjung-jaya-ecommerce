@@ -1,6 +1,6 @@
 # Daftar Activity Diagram - Sistem E-Commerce Tanjung Jaya
 
-Berikut adalah daftar 23 Activity Diagram (UML) yang merepresentasikan alur kerja sistem. File `.puml` dapat dirender menggunakan ekstensi PlantUML di VS Code (`Alt + D`) atau via [PlantText](https://www.planttext.com/).
+Berikut adalah daftar 24 Activity Diagram (UML) yang merepresentasikan alur kerja sistem. File `.puml` dapat dirender menggunakan ekstensi PlantUML di VS Code (`Alt + D`) atau via [PlantText](https://www.planttext.com/).
 
 ## A. Customer
 1. `activity-lihat-katalog.puml`: Alur mencari dan melihat detail produk.
@@ -10,6 +10,7 @@ Berikut adalah daftar 23 Activity Diagram (UML) yang merepresentasikan alur kerj
 5. `activity-ulasan-rating.puml`: Alur pemberian *review* setelah pesanan selesai.
 6. `activity-ajukan-retur.puml`: Alur pembuatan RMA (Return Merchandise Auth).
 7. `activity-chatbot-ai.puml`: Alur tanya jawab otomatis dan pelacakan resi via AI.
+8. `activity-wishlist.puml`: Alur penambahan dan penghapusan produk favorit.
 
 ## B. Admin
 8. `activity-kelola-produk.puml`: Alur CRUD data produk.
@@ -38,7 +39,7 @@ Berikut adalah daftar 23 Activity Diagram (UML) yang merepresentasikan alur kerj
 ---
 
 ## Tentang Sequence Diagram (Laravel MVC)
-Sebagai kelanjutan teknis, di direktori ini juga terdapat **23 file Sequence Diagram** (`sequence-*.puml`) yang namanya identik dengan file Activity Diagram di atas. 
+Sebagai kelanjutan teknis, di direktori ini juga terdapat **24 file Sequence Diagram** (`sequence-*.puml`) yang namanya identik dengan file Activity Diagram di atas. 
 
 Sequence diagram ini memetakan seluruh langkah kerja tersebut ke dalam Lifeline / arsitektur teknis **Laravel MVC**, meliputi:
 - `View` (Blade UI)

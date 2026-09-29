@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -12,7 +13,25 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        $middleware->alias([
+            'role' => RoleMiddleware::class,
+        ]);
+
+        // Guest diarahkan ke halaman login.
+        // User yang sudah login tapi membuka /login atau /register diarahkan sesuai peran:
+        // Customer ke katalog, Admin/Gudang/Manager ke dashboard modulnya.
+        $middleware->redirectGuestsTo(fn () => route('login'));
+
+        $middleware->redirectUsersTo(function () {
+            $role = auth()->user()?->role;
+
+            return match ($role) {
+                'Admin' => route('admin.products.index'),
+                'Gudang' => route('gudang.orders.index'),
+                'Manager' => route('manager.dashboard'),
+                default => route('home'),
+            };
+        });
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

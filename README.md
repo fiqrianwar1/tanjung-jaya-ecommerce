@@ -1,58 +1,99 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+﻿# Tanjung Jaya Corporation â€” Aplikasi E-Commerce
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplikasi e-commerce untuk **PT. Warna Tanjung Jaya & PT. Sumber Tanjung Jaya** (toko bangunan & peralatan rumah tangga, Banjarmasin). Dibangun dengan Laravel + Blade + Alpine.js + Tailwind CSS.
 
-## About Laravel
+## Fitur Utama
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Pelanggan (Customer)
+- Katalog produk dengan pencarian, filter kategori, banner promo, dan blok rekomendasi produk.
+- Keranjang belanja (ubah jumlah, hapus item, checkout dengan validasi stok).
+- Riwayat pesanan, pelacakan status, ulasan produk, pengajuan retur, dan wishlist.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Administrator
+- CRUD produk & kategori (upload gambar, filter harga/stok).
+- Monitoring & update status pesanan (kurir + nomor resi).
+- Moderasi ulasan (publish/hidden + balasan admin).
+- Verifikasi pengajuan retur (setujui/tolak + pengembalian stok).
+- Manajemen peran pengguna dan audit log aktivitas.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Gudang
+- Monitor stok & riwayat mutasi inventori (in/out/adjustment).
+- Antrian pengiriman pesanan dan input nomor resi.
+- Penerimaan barang retur fisik (layak jual vs stok rusak).
 
-## Learning Laravel
+### Manager
+- Dashboard eksekutif (pendapatan, tren penjualan, produk terlaris).
+- Laporan penjualan per rentang tanggal + ekspor CSV.
+- Langganan laporan otomatis (harian/mingguan/bulanan).
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Asisten AI (Chatbot)
+Widget chat di halaman publik/katalog yang di-*grounding* ke katalog asli sehingga hanya menjawab seputar produk Tanjung Jaya (harga, stok, rekomendasi, cara belanja).
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Kebutuhan Sistem
+- PHP 8.3+ dengan ekstensi standar Laravel
+- Composer 2
+- Node.js 20+ & npm
+- Database: MySQL/MariaDB (default Laravel Herd) atau SQLite
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Instalasi
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+composer install
+copy .env.example .env      # Linux/macOS: cp .env.example .env
+php artisan key:generate
+php artisan migrate --seed
+npm install
+npm run build               # wajib: meng-generate public/build (Alpine.js)
+php artisan storage:link
+php artisan serve
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+## Konfigurasi Asisten AI (Groq)
 
-## Contributing
+Isi kredensial pada `.env`:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```env
+GROQ_API_KEY=isi_api_key_anda
+GROQ_API_URL=https://api.groq.com/openai/v1/chat/completions
+GROQ_MODEL=openai/gpt-oss-120b
+```
 
-## Code of Conduct
+> Nama model Groq dapat berubah/dipensiunkan. Cek daftar model aktif lewat
+> `GET https://api.groq.com/openai/v1/models` memakai API key Anda, lalu sesuaikan `GROQ_MODEL`.
+> Bila model utama tidak tersedia, layanan otomatis mencoba model cadangan (`openai/gpt-oss-20b`).
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Akun Demo (hasil seeder)
 
-## Security Vulnerabilities
+| Peran    | Email                    | Password |
+|----------|--------------------------|----------|
+| Admin    | admin@tanjungjaya.com    | password |
+| Manager  | manager@tanjungjaya.com  | password |
+| Gudang   | gudang@tanjungjaya.com   | password |
+| Customer | customer@tanjungjaya.com | password |
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Pengujian & Tangkapan Layar
 
-## License
+Proyek ini memakai [Playwright](https://playwright.dev/) untuk *smoke test* setiap halaman per peran sekaligus menghasilkan screenshot dokumentasi.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+php artisan serve                                   # di terminal terpisah
+npx playwright test tests/e2e/smoke-screenshots.spec.ts
+npx playwright test tests/e2e/register.spec.ts
+```
+
+Hasil screenshot tersimpan di `docs/screenshots/` (katalog, keranjang, pesanan, admin, gudang, manager, dan jawaban chatbot).
+
+## Hak Akses per Peran
+
+| Modul     | Prefix      | Middleware      |
+|-----------|-------------|-----------------|
+| Customer  | `/carts`, `/orders`, `/reviews`, `/returns`, `/wishlists` | `role:Customer` |
+| Admin     | `/admin/*`  | `role:Admin`    |
+| Gudang    | `/gudang/*` | `role:Gudang`   |
+| Manager   | `/manager/*`| `role:Manager`  |
+
+
+## Lisensi
+
+Proyek internal Tanjung Jaya Corporation. Dibangun di atas framework [Laravel](https://laravel.com) (MIT).
+

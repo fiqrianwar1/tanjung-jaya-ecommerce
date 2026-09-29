@@ -1,0 +1,167 @@
+Project "Tanjung Jaya E-Commerce" {
+  database_type: 'MySQL/SQLite'
+  Note: 'Sistem E-Commerce Tanjung Jaya B2B/B2C'
+}
+
+Table users {
+  id bigint [primary key, increment]
+  name varchar [not null]
+  email varchar [unique, not null]
+  email_verified_at timestamp
+  password varchar [not null]
+  role varchar [default: 'Customer', note: 'Customer, Admin, Gudang, Manager']
+  remember_token varchar
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table categories {
+  id bigint [primary key, increment]
+  name varchar [not null]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table products {
+  id bigint [primary key, increment]
+  category_id bigint [not null, ref: > categories.id]
+  name varchar [not null]
+  description text
+  price decimal(15,2) [not null]
+  stock int [default: 0]
+  bad_stock int [default: 0]
+  status varchar [default: 'active', note: 'active, inactive']
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table orders {
+  id bigint [primary key, increment]
+  user_id bigint [not null, ref: > users.id]
+  total decimal(15,2) [not null]
+  shipping_cost decimal(15,2) [default: 0]
+  courier varchar
+  resi varchar
+  status varchar [default: 'Menunggu Pembayaran', note: 'Index applied']
+  shipped_at timestamp [note: 'For Fulfillment Lead Time analysis, Index applied']
+  created_at timestamp [note: 'Index applied']
+  updated_at timestamp
+}
+
+Table order_items {
+  id bigint [primary key, increment]
+  order_id bigint [not null, ref: > orders.id]
+  product_id bigint [not null, ref: > products.id]
+  qty int [not null]
+  price decimal(15,2) [not null]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table reviews {
+  id bigint [primary key, increment]
+  user_id bigint [not null, ref: > users.id]
+  product_id bigint [not null, ref: > products.id]
+  rating int [not null]
+  comment text
+  admin_reply text
+  status varchar [default: 'published', note: 'published, hidden']
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table return_requests {
+  id bigint [primary key, increment]
+  order_id bigint [not null, ref: > orders.id]
+  reason varchar [not null]
+  proof_image varchar
+  status varchar [default: 'Menunggu Verifikasi']
+  notes text
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table audit_logs {
+  id bigint [primary key, increment]
+  user_id bigint [not null, ref: > users.id]
+  action varchar [not null]
+  target_id bigint
+  old_data json
+  new_data json
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table stock_logs {
+  id bigint [primary key, increment]
+  product_id bigint [not null, ref: > products.id]
+  user_id bigint [not null, ref: > users.id]
+  type varchar [not null, note: 'in, out, adjustment']
+  qty int [not null]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table carts {
+  id bigint [primary key, increment]
+  user_id bigint [not null, ref: > users.id]
+  emailed boolean [default: false]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table cart_items {
+  id bigint [primary key, increment]
+  cart_id bigint [not null, ref: > carts.id]
+  product_id bigint [not null, ref: > products.id]
+  qty int [not null]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table user_activities {
+  id bigint [primary key, increment]
+  user_id bigint [not null, ref: > users.id]
+  product_id bigint [not null, ref: > products.id]
+  action varchar [not null]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table report_subscriptions {
+  id bigint [primary key, increment]
+  manager_id bigint [not null, ref: > users.id]
+  report_type varchar [not null]
+  frequency varchar [not null]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table daily_sales_summaries {
+  id bigint [primary key, increment]
+  date date [not null, unique, note: 'Index applied']
+  total_orders int [not null, default: 0]
+  total_revenue decimal(15,2) [not null, default: 0]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table monthly_product_sales {
+  id bigint [primary key, increment]
+  month varchar [not null, note: 'Format YYYY-MM, Index applied']
+  product_id bigint [not null, ref: > products.id]
+  total_qty_sold int [not null, default: 0]
+  total_revenue decimal(15,2) [not null, default: 0]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table wishlists {
+  id bigint [primary key, increment]
+  user_id bigint [not null, ref: > users.id]
+  product_id bigint [not null, ref: > products.id]
+  created_at timestamp
+  updated_at timestamp
+  
+  Note: 'N:M relasi antara users dan products untuk fitur favorit'
+}

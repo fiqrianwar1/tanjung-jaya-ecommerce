@@ -1,9 +1,82 @@
-@import 'tailwindcss';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
+/* ==========================================================================
+   Design Tokens & Base Layer — Tanjung Jaya Corporation
+   Dipakai konsisten di seluruh halaman (public, auth, admin, gudang, manager)
+   ========================================================================== */
+@layer base {
+    html {
+        scroll-behavior: smooth;
+    }
 
-@theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    /* Fokus ring yang konsisten untuk aksesibilitas keyboard */
+    :focus-visible {
+        outline: 2px solid theme('colors.emerald.500');
+        outline-offset: 2px;
+        border-radius: 0.5rem;
+    }
+
+    /* Sembunyikan spinner default input number agar tampilan lebih rapi */
+    input[type='number']::-webkit-outer-spin-button,
+    input[type='number']::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+}
+
+@layer components {
+    /* Kelas util yang sering dipakai berulang di banyak halaman */
+    .tj-card {
+        @apply bg-white rounded-3xl shadow-sm border border-slate-100;
+    }
+
+    .tj-card-pad {
+        @apply p-6 sm:p-8;
+    }
+
+    .tj-section-title {
+        @apply text-lg font-bold text-slate-800;
+    }
+
+    .tj-muted {
+        @apply text-sm text-slate-500;
+    }
+
+    .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .hide-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    /* Scrollbar halus untuk panel gelap (audit log payload, dsb) */
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background-color: #475569;
+        border-radius: 10px;
+    }
+}
+
+@layer utilities {
+    /* Animasi masuk halus untuk kartu & modal */
+    @keyframes tj-fade-up {
+        from { opacity: 0; transform: translateY(8px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-fade-up {
+        animation: tj-fade-up 0.35s ease-out both;
+    }
 }

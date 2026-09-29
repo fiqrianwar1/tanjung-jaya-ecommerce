@@ -18,6 +18,7 @@ Sistem ini akan memiliki 4 (empat) jenis peran pengguna:
 
 ### A. Fitur untuk Customer
 - **Katalog Produk:** Customer dapat melihat daftar produk, detail penjelasan produk, dan harga.
+- **Wishlist (Barang Disukai):** Customer dapat menyimpan produk yang mereka minati ke dalam daftar keinginan sebelum membeli.
 - **Keranjang & Checkout:** Customer dapat menambahkan barang ke keranjang dan melakukan pemesanan (checkout).
 - **Lacak Pesanan:** Customer dapat melihat status pesanannya (misal: Menunggu Pembayaran, Diproses, Dikirim, Selesai).
 - **Ulasan & Rating:** Customer dapat memberikan ulasan dan rating pada produk setelah pesanan selesai.

@@ -16,6 +16,7 @@ Waktu pengerjaan diasumsikan sekitar 1-3 bulan untuk skala portofolio mahasiswa.
 Untuk memberikan nilai tambah (*wow factor*) pada portofolio dan mengikuti tren teknologi modern, sistem ini juga dilengkapi dengan:
 - **Chatbot AI (Machine Learning):** Asisten pintar untuk menjawab FAQ pelanggan 24/7.
 - **Rekomendasi Produk AI (Machine Learning):** Fitur saran produk kustom ("Mungkin Anda Sukai") berbasis riwayat belanja untuk mendongkrak penjualan lintas produk (*Cross-selling*).
+- **Wishlist (Daftar Keinginan):** Memungkinkan pelanggan menyimpan produk favorit yang disukai untuk pembelian di masa mendatang, meningkatkan potensi konversi (*Retention*).
 - **Abandoned Cart Recovery (Background Job):** Otomatisasi pengiriman email pengingat kepada pelanggan yang meninggalkan keranjang belanja.
 - **Audit Trail & User Impersonation (Admin):** Pencatatan log aktivitas secara komprehensif untuk keamanan, serta fitur "Login As" untuk kemudahan *troubleshooting* kendala pelanggan layaknya aplikasi *Enterprise*.
 - **Batch Processing & Simulasi Barcode (Gudang):** Efisiensi operasional gudang dengan kemampuan *update* status pengiriman secara massal (*bulk action*).

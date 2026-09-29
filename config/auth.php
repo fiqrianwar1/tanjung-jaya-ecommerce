@@ -22,6 +22,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Authentication Redirects
+    |--------------------------------------------------------------------------
+    |
+    | Guest diarahkan ke halaman login, sedangkan user yang sudah login tapi
+    | mengakses halaman auth (login/register) diarahkan sesuai perannya.
+    |
+    */
+
+    'redirects' => [
+        'guest' => '/login',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Authentication Guards
     |--------------------------------------------------------------------------
     |

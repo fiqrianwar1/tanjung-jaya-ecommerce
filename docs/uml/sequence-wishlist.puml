@@ -1,0 +1,89 @@
+@startuml sequence-wishlist
+skinparam style strictuml
+skinparam backgroundColor #FFFFFF
+skinparam sequence {
+  ArrowColor #2E7D32
+  LifeLineBorderColor #2E7D32
+  ParticipantBorderColor #2E7D32
+  ParticipantBackgroundColor #E8F5E9
+}
+
+title Sequence Diagram - Tambah & Hapus Wishlist
+
+actor "Customer" as Customer
+boundary "Katalog/Produk View" as View
+control "WishlistController" as Controller
+entity "Wishlist" as Model
+entity "Product" as ProductModel
+database "Database" as DB
+
+Customer -> View: Klik tombol "Toggle Wishlist"
+activate View
+View -> Controller: POST /customer/wishlists {product_id}
+activate Controller
+
+Controller -> Controller: Cek Auth (Login)
+alt Belum Login
+  Controller --> View: Redirect ke Halaman Login
+  View --> Customer: Tampilkan Form Login
+else Sudah Login
+  Controller -> Model: where('user_id', ID) & where('product_id', ID)
+  activate Model
+  Model -> DB: Query Select
+  activate DB
+  DB --> Model: Hasil (Ada / Tidak Ada)
+  deactivate DB
+  Model --> Controller: Instance Wishlist / Null
+  deactivate Model
+
+  alt Produk belum ada di Wishlist
+    Controller -> Model: create(user_id, product_id)
+    activate Model
+    Model -> DB: Insert Into wishlists
+    activate DB
+    DB --> Model: Success
+    deactivate DB
+    Model --> Controller: Instance Created
+    deactivate Model
+    Controller --> View: Redirect Back with Success "Ditambahkan"
+  else Produk sudah ada di Wishlist
+    Controller -> Model: delete()
+    activate Model
+    Model -> DB: Delete from wishlists
+    activate DB
+    DB --> Model: Success
+    deactivate DB
+    Model --> Controller: True
+    deactivate Model
+    Controller --> View: Redirect Back with Success "Dihapus"
+  end
+end
+
+View --> Customer: Tampilkan Notifikasi Flash Message
+deactivate View
+deactivate Controller
+
+== Melihat Daftar Wishlist ==
+Customer -> View: Buka Menu "Wishlist Saya"
+activate View
+View -> Controller: GET /customer/wishlists
+activate Controller
+
+Controller -> Model: where('user_id', Auth ID)->get()
+activate Model
+Model -> ProductModel: Eager Load Product
+activate ProductModel
+ProductModel -> DB: Query
+activate DB
+DB --> ProductModel: Products Data
+deactivate DB
+ProductModel --> Model: Product Models
+deactivate ProductModel
+Model --> Controller: Collection (Wishlist)
+deactivate Model
+
+Controller --> View: Render 'customer.wishlists.index' (data)
+View --> Customer: Tampilkan Daftar Wishlist
+deactivate Controller
+deactivate View
+@enduml

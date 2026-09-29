@@ -126,27 +126,42 @@ package "Sistem E-Commerce Tanjung Jaya - Class Diagram" {
     }
 
     class ReportSubscription {
-      - id: int
-      - manager_id: int
-      - report_type: string
-      - frequency: string
-      + updateOrCreate()
+      +id: bigint
+      +manager_id: bigint
+      +report_type: varchar
+      +frequency: varchar
+    }
+
+    class Wishlist {
+      +id: bigint
+      +user_id: bigint
+      +product_id: bigint
+      +created_at: timestamp
     }
 
     ' === Relasi Antar Kelas ===
 
-    User "1" -- "0..*" Order : makes >
-    Order "1" *-- "1..*" OrderItem : contains >
-    Product "1" -- "0..*" OrderItem : included in <
+    User "1" -- "0..*" Order
+    User "1" -- "0..*" Review
+    User "1" -- "0..*" Cart
+    User "1" -- "0..*" AuditLog
+    User "1" -- "0..*" StockLog
+    User "1" -- "0..*" UserActivity
+    User "1" -- "0..*" ReportSubscription
+    User "1" -- "0..*" Wishlist
 
-    User "1" -- "0..*" Review : writes >
-    Product "1" -- "0..*" Review : receives >
+    Category "1" -- "0..*" Product
+    Product "1" -- "0..*" OrderItem
+    Product "1" -- "0..*" Review
+    Product "1" -- "0..*" CartItem
+    Product "1" -- "0..*" StockLog
+    Product "1" -- "0..*" UserActivity
+    Product "1" -- "0..*" Wishlist
 
     Order "1" -- "0..1" ReturnRequest : has >
 
     User "1" -- "1" Cart : owns >
     Cart "1" *-- "0..*" CartItem : contains >
-    Product "1" -- "0..*" CartItem : added to <
 
     Category "1" -- "0..*" Product : classifies >
 
