@@ -16,11 +16,19 @@ class OrderFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    /**
+     * Status memakai format yang dikenali aplikasi (pending/processing/
+     * shipped/completed), bukan label bahasa Indonesia.
+     */
+    private const STATUSES = ['pending', 'processing', 'shipped', 'completed'];
+
     public function definition(): array
     {
         $createdAt = fake()->dateTimeBetween('-3 months', 'now');
-        $status = fake()->randomElement(['Menunggu Pembayaran', 'Dibayar/Verifikasi', 'Diproses Gudang', 'Dikirim', 'Selesai']);
-        $shippedAt = in_array($status, ['Dikirim', 'Selesai']) ? (clone $createdAt)->modify('+'.rand(1, 48).' hours') : null;
+        $status = fake()->randomElement(self::STATUSES);
+        $shippedAt = in_array($status, ['shipped', 'completed'], true)
+            ? (clone $createdAt)->modify('+'.rand(1, 48).' hours')
+            : null;
 
         return [
             'user_id' => User::where('role', 'Customer')->inRandomOrder()->first()->id ?? User::factory(),

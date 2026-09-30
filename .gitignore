@@ -25,6 +25,8 @@ Homestead.yaml
 # Custom / OS Specific
 .DS_Store
 Thumbs.db
+.vscode/
+.idea/
 
 # Artefak hasil pengujian Playwright (laporan/video/jejak) — folder screenshot tetap disimpan
 /docs/testing/playwright-report/
