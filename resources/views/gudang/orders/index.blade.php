@@ -1,4 +1,6 @@
 <x-app-layout>
+    @section('title', 'Pesanan (Pengiriman)')
+
     <x-slot name="header">Pesanan (Pengiriman)</x-slot>
 
     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">

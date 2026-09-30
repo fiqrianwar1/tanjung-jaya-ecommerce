@@ -1,4 +1,6 @@
 <x-app-layout>
+    @section('title', 'Dashboard Eksekutif')
+
     <x-slot name="header">Dashboard Eksekutif</x-slot>
 
     @php

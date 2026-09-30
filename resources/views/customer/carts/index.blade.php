@@ -1,4 +1,6 @@
 <x-app-layout>
+    @section('title', 'Keranjang Belanja')
+
     <x-slot name="header">
         Keranjang Belanja
     </x-slot>

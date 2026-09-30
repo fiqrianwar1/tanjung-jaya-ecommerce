@@ -1,4 +1,6 @@
 <x-app-layout>
+    @section('title', 'Retur Barang')
+
     <x-slot name="header">Retur Barang</x-slot>
 
     <div class="flex justify-between items-center mb-6">

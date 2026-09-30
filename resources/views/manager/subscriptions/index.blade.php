@@ -1,4 +1,6 @@
 <x-app-layout>
+    @section('title', 'Langganan Laporan')
+
     <x-slot name="header">Langganan Laporan</x-slot>
 
     <div class="mb-6">

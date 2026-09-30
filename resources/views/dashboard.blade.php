@@ -30,13 +30,6 @@
             ['label' => 'Stok Menipis', 'value' => $lowStockCount, 'tone' => 'rose',
                 'icon' => 'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z'],
         ];
-
-        $toneClasses = [
-            'blue' => 'bg-blue-50 text-blue-600 group-hover:bg-blue-600',
-            'emerald' => 'bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600',
-            'amber' => 'bg-amber-50 text-amber-600 group-hover:bg-amber-500',
-            'rose' => 'bg-rose-50 text-rose-600 group-hover:bg-rose-500',
-        ];
     @endphp
 
     <!-- Welcome Banner -->
@@ -71,18 +64,12 @@
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         @foreach($stats as $stat)
-        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 flex flex-col group hover:shadow-xl hover:border-emerald-100 transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden">
-            <div class="flex items-center justify-between mb-4 relative z-10">
-                <div class="w-12 h-12 rounded-2xl {{ $toneClasses[$stat['tone']] }} group-hover:text-white flex items-center justify-center transition-colors duration-300 shadow-sm">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $stat['icon'] }}"></path></svg>
-                </div>
-            </div>
-            <div class="relative z-10">
-                <h4 class="text-slate-500 font-semibold text-sm mb-1 uppercase tracking-wider">{{ $stat['label'] }}</h4>
-                <div class="text-2xl font-black text-slate-800">{{ $stat['value'] }}</div>
-            </div>
-            <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-gradient-to-br from-slate-50 to-transparent rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-        </div>
+            <x-stat-card
+                :label="$stat['label']"
+                :value="$stat['value']"
+                :icon="$stat['icon']"
+                :tone="$stat['tone']"
+            />
         @endforeach
     </div>
 

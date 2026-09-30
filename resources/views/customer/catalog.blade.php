@@ -1,4 +1,6 @@
 <x-app-layout>
+    @section('title', 'Katalog Produk')
+
     <x-slot name="header">Tanjung Jaya</x-slot>
 
     <!-- Carousel Banner with Alpine.js -->
@@ -6,9 +8,9 @@
         
         <!-- Slide 1 -->
         <div x-show="slide === 0" x-transition.opacity.duration.700ms class="absolute inset-0 w-full h-full bg-slate-900 flex items-center px-8 md:px-20 text-white overflow-hidden group/slide">
-            <img src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?q=80&w=2070&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-overlay group-hover/slide:scale-105 transition-transform duration-[2000ms]" alt="Promo Gajian">
+            <img src="{{ asset('images/products/cat-interior.jpg') }}" class="absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-overlay group-hover/slide:scale-105 transition-transform duration-[2000ms]" alt="Cat Tembok Interior">
             <div class="absolute inset-0 bg-gradient-to-r from-emerald-950/95 via-emerald-900/80 to-transparent"></div>
-            
+
             <div class="relative z-10 max-w-2xl transform transition duration-700 delay-100 translate-y-0 opacity-100">
                 <span class="inline-block py-1 px-4 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-xs font-black tracking-widest mb-4 backdrop-blur-md uppercase">Promo Terbatas</span>
                 <h2 class="text-4xl md:text-6xl font-black mb-4 tracking-tighter drop-shadow-lg leading-tight">Promo Gajian <br><span class="text-emerald-400">Paling Cuan!</span></h2>
@@ -16,12 +18,12 @@
                 <a href="#" class="bg-emerald-500 text-white px-8 py-3.5 rounded-full font-bold shadow-[0_0_20px_rgba(16,185,129,0.4)] hover:shadow-[0_0_30px_rgba(16,185,129,0.6)] hover:bg-emerald-400 transition-all transform hover:-translate-y-1 inline-block border border-emerald-400/50">Klaim Promo Sekarang</a>
             </div>
         </div>
-        
+
         <!-- Slide 2 -->
         <div x-show="slide === 1" x-cloak x-transition.opacity.duration.700ms class="absolute inset-0 w-full h-full bg-slate-900 flex items-center px-8 md:px-20 text-white overflow-hidden group/slide">
-            <img src="https://images.unsplash.com/photo-1555529771-835f59fc5efe?q=80&w=2070&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-overlay group-hover/slide:scale-105 transition-transform duration-[2000ms]" alt="Gratis Ongkir">
+            <img src="{{ asset('images/products/alat-pengecatan.jpg') }}" class="absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-overlay group-hover/slide:scale-105 transition-transform duration-[2000ms]" alt="Alat Pengecatan">
             <div class="absolute inset-0 bg-gradient-to-r from-blue-950/95 via-indigo-900/80 to-transparent"></div>
-            
+
             <div class="relative z-10 max-w-2xl transform transition duration-700 delay-100 translate-y-0 opacity-100">
                 <span class="inline-block py-1 px-4 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-300 text-xs font-black tracking-widest mb-4 backdrop-blur-md uppercase">Pengiriman Cepat</span>
                 <h2 class="text-4xl md:text-6xl font-black mb-4 tracking-tighter drop-shadow-lg leading-tight">Gratis Ongkir <br><span class="text-blue-400">Seluruh Indonesia</span></h2>
@@ -29,10 +31,10 @@
                 <a href="#" class="bg-blue-600 text-white px-8 py-3.5 rounded-full font-bold shadow-[0_0_20px_rgba(37,99,235,0.4)] hover:shadow-[0_0_30px_rgba(37,99,235,0.6)] hover:bg-blue-500 transition-all transform hover:-translate-y-1 inline-block border border-blue-400/50">Mulai Belanja</a>
             </div>
         </div>
-        
+
         <!-- Slide 3 -->
         <div x-show="slide === 2" x-cloak x-transition.opacity.duration.700ms class="absolute inset-0 w-full h-full bg-slate-900 flex items-center px-8 md:px-20 text-white overflow-hidden group/slide">
-            <img src="https://images.unsplash.com/photo-1605901309584-818e25960b8f?q=80&w=2019&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-overlay group-hover/slide:scale-105 transition-transform duration-[2000ms]" alt="Flash Sale">
+            <img src="{{ asset('images/products/cat-eksterior.jpg') }}" class="absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-overlay group-hover/slide:scale-105 transition-transform duration-[2000ms]" alt="Cat Tembok Eksterior">
             <div class="absolute inset-0 bg-gradient-to-r from-amber-950/95 via-orange-900/80 to-transparent"></div>
             
             <div class="relative z-10 max-w-2xl transform transition duration-700 delay-100 translate-y-0 opacity-100">
@@ -76,13 +78,41 @@
             </a>
             
             @foreach($categories as $cat)
-            <a href="{{ route('home', ['category' => $cat->id]) }}#produk-katalog" class="flex flex-col items-center min-w-[90px] group">
+            @php
+                // Ikon khas per kategori supaya tiap kategori bisa dibedakan
+                // sekilas. Dicocokkan lewat kata kunci nama kategori; bila nama
+                // kategori berubah, otomatis jatuh ke ikon default (kuas).
+                $iconByKeyword = [
+                    // Dicek lebih dulu agar "eksterior" tidak tertangkap "interior"
+                    // (keduanya mengandung "erior").
+                    'eksterior' => 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3M9 21v-6h6v6',
+                    'interior' => 'M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z',
+                    'kayu' => 'M4 6h16M4 12h16M4 18h16',
+                    'pengecatan' => 'M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01',
+                    'thinner' => 'M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z',
+                ];
+
+                $namaKategori = strtolower($cat->name);
+                $iconPath = 'M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01';
+
+                foreach ($iconByKeyword as $kata => $path) {
+                    if (str_contains($namaKategori, $kata)) {
+                        $iconPath = $path;
+                        break;
+                    }
+                }
+
+                // Nama kategori panjang (mis. "Alat Pengecatan (Kuas/Roller)")
+                // dipersingkat untuk chip; teks lengkap tetap dibawa lewat title.
+                $labelKategori = preg_replace('/\s*\(.*?\)\s*/', '', $cat->name);
+            @endphp
+            <a href="{{ route('home', ['category' => $cat->id]) }}#produk-katalog" title="{{ $cat->name }}" class="flex flex-col items-center min-w-[104px] max-w-[104px] group">
                 <div class="w-16 h-16 rounded-2xl border {{ request('category') == $cat->id ? 'border-emerald-500 bg-emerald-50 shadow-[0_8px_20px_-6px_rgba(16,185,129,0.3)]' : 'border-slate-200 bg-white shadow-sm' }} flex items-center justify-center mb-3 group-hover:border-emerald-500 group-hover:shadow-[0_8px_20px_-6px_rgba(16,185,129,0.3)] transition-all duration-300 transform group-hover:-translate-y-1">
                     <div class="p-2 rounded-xl {{ request('category') == $cat->id ? 'bg-emerald-100/50 text-emerald-600 scale-110' : 'bg-slate-50 text-slate-500 group-hover:bg-emerald-50 group-hover:text-emerald-500 group-hover:scale-110' }} transition-all duration-300">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $iconPath }}"></path></svg>
                     </div>
                 </div>
-                <span class="text-xs font-bold text-slate-700 text-center leading-tight {{ request('category') == $cat->id ? 'text-emerald-600' : 'group-hover:text-emerald-600' }} transition">{{ $cat->name }}</span>
+                <span class="text-xs font-bold text-slate-700 text-center leading-snug {{ request('category') == $cat->id ? 'text-emerald-600' : 'group-hover:text-emerald-600' }} transition">{{ $labelKategori }}</span>
             </a>
             @endforeach
         </div>
@@ -151,14 +181,14 @@
         </div>
 
     @if($products->isEmpty())
-        <div class="bg-white rounded-3xl border border-slate-100 p-16 text-center my-8 shadow-sm">
-            <div class="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-5 border border-slate-100">
-                <svg class="w-11 h-11 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-            </div>
-            <h3 class="text-lg font-bold text-slate-800 mb-1">Oops, barangnya tidak ditemukan</h3>
-            <p class="text-slate-500">Coba kata kunci lain atau cek kategori lainnya.</p>
-            <a href="{{ route('home') }}" class="inline-block mt-6 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-3 rounded-xl transition shadow-md shadow-emerald-500/25">Lihat Semua Produk</a>
-        </div>
+        <x-empty-state
+            title="Oops, barangnya tidak ditemukan"
+            description="Coba kata kunci lain atau cek kategori lainnya."
+            icon="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            :action-href="route('home')"
+            action-label="Lihat Semua Produk"
+            class="my-8"
+        />
     @else
         <!-- Grid Produk -->
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6 mb-10">

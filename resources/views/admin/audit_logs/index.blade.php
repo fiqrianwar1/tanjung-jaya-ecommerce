@@ -1,4 +1,6 @@
 <x-app-layout>
+    @section('title', 'Audit Logs')
+
     <x-slot name="header">Audit Logs</x-slot>
 
     <div class="flex justify-between items-center mb-6">

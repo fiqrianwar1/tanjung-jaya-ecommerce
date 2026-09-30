@@ -1,4 +1,6 @@
 <x-app-layout>
+    @section('title', 'Manajemen Kategori')
+
     <x-slot name="header">Manajemen Kategori</x-slot>
 
     <div x-data="{ 

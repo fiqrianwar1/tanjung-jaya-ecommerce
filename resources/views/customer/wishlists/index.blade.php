@@ -1,4 +1,6 @@
 <x-app-layout>
+    @section('title', 'Wishlist Saya')
+
     <x-slot name="header">
         Wishlist Saya
     </x-slot>

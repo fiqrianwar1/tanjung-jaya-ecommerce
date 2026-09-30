@@ -26,6 +26,31 @@
     }
 }
 
+/* ==========================================================================
+   Token Desain — Tanjung Jaya Corporation
+   Sumber tunggal untuk warna brand, radius, dan bayangan agar seluruh
+   halaman (public, auth, admin, gudang, manager) tampil konsisten.
+   ========================================================================== */
+@layer base {
+    :root {
+        /* Brand — hijau Tanjung Jaya */
+        --tj-brand: theme('colors.emerald.500');
+        --tj-brand-dark: theme('colors.emerald.600');
+        --tj-brand-soft: theme('colors.emerald.50');
+
+        /* Netral */
+        --tj-ink: theme('colors.slate.800');
+        --tj-muted: theme('colors.slate.500');
+        --tj-line: theme('colors.slate.100');
+
+        /* Radius & bayangan */
+        --tj-radius: 1rem;
+        --tj-radius-lg: 1.5rem;
+        --tj-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+        --tj-shadow-hover: 0 8px 30px -4px rgb(0 0 0 / 0.1);
+    }
+}
+
 @layer components {
     /* Kelas util yang sering dipakai berulang di banyak halaman */
     .tj-card {
@@ -36,12 +61,74 @@
         @apply p-6 sm:p-8;
     }
 
+    /* Kartu interaktif: terangkat halus saat hover */
+    .tj-card-hover {
+        @apply transition-all duration-300 hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.1)] hover:-translate-y-1;
+    }
+
     .tj-section-title {
         @apply text-lg font-bold text-slate-800;
     }
 
+    /* Judul halaman besar dipakai di header katalog, wishlist, dsb. */
+    .tj-page-title {
+        @apply text-3xl font-black text-slate-800 tracking-tight;
+    }
+
     .tj-muted {
         @apply text-sm text-slate-500;
+    }
+
+    /* ----------------------------------------------------------------
+       Tombol — satu bentuk dasar, dibedakan lewat varian warna.
+       ---------------------------------------------------------------- */
+    .tj-btn {
+        @apply inline-flex items-center justify-center font-bold rounded-xl transition-all duration-200 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed;
+    }
+
+    .tj-btn-sm { @apply px-3 py-1.5 text-sm; }
+    .tj-btn-md { @apply px-5 py-2.5 text-sm; }
+    .tj-btn-lg { @apply px-8 py-3.5 text-base; }
+
+    .tj-btn-primary {
+        @apply bg-emerald-500 text-white border border-emerald-500 hover:bg-emerald-600 hover:border-emerald-600 shadow-sm hover:shadow-md;
+    }
+
+    .tj-btn-secondary {
+        @apply bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 hover:border-slate-300 shadow-sm;
+    }
+
+    .tj-btn-outline {
+        @apply bg-transparent text-emerald-600 border border-emerald-500 hover:bg-emerald-50;
+    }
+
+    .tj-btn-soft {
+        @apply bg-emerald-50 text-emerald-600 border border-emerald-200 hover:bg-emerald-500 hover:text-white hover:border-emerald-500;
+    }
+
+    .tj-btn-danger {
+        @apply bg-red-600 text-white border border-red-600 hover:bg-red-700 hover:border-red-700 shadow-sm;
+    }
+
+    /* ----------------------------------------------------------------
+       Badge status — dipakai konsisten di tabel admin, gudang, customer.
+       ---------------------------------------------------------------- */
+    .tj-badge {
+        @apply inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-bold border;
+    }
+
+    .tj-badge-neutral { @apply bg-slate-50 text-slate-700 border-slate-200; }
+    .tj-badge-amber   { @apply bg-amber-50 text-amber-700 border-amber-200; }
+    .tj-badge-blue    { @apply bg-blue-50 text-blue-700 border-blue-200; }
+    .tj-badge-indigo  { @apply bg-indigo-50 text-indigo-700 border-indigo-200; }
+    .tj-badge-emerald { @apply bg-emerald-50 text-emerald-700 border-emerald-200; }
+    .tj-badge-rose    { @apply bg-rose-50 text-rose-700 border-rose-200; }
+
+    /* ----------------------------------------------------------------
+       Kolom pencarian & filter yang bentuknya berulang di banyak halaman.
+       ---------------------------------------------------------------- */
+    .tj-input {
+        @apply w-full border border-slate-300 rounded-xl px-4 py-2 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 transition-colors;
     }
 
     .hide-scrollbar::-webkit-scrollbar {

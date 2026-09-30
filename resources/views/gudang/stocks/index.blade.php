@@ -1,4 +1,6 @@
 <x-app-layout>
+    @section('title', 'Stok & Inventaris')
+
     <x-slot name="header">Stok & Inventaris</x-slot>
 
     @php

@@ -1,4 +1,6 @@
 <x-app-layout>
+    @section('title', 'Laporan Keuangan')
+
     <x-slot name="header">Laporan Keuangan</x-slot>
 
     <div class="flex flex-col lg:flex-row lg:justify-between lg:items-end gap-4 mb-6">

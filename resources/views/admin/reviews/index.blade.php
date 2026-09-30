@@ -1,4 +1,6 @@
 <x-app-layout>
+    @section('title', 'Moderasi Ulasan')
+
     <x-slot name="header">Moderasi Ulasan</x-slot>
 
     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
