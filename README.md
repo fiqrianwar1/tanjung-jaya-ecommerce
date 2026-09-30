@@ -2,6 +2,34 @@
 
 Aplikasi e-commerce untuk **PT. Warna Tanjung Jaya & PT. Sumber Tanjung Jaya** (toko bangunan & peralatan rumah tangga, Banjarmasin). Dibangun dengan Laravel + Blade + Alpine.js + Tailwind CSS.
 
+## Tangkapan Layar
+
+### Katalog & Asisten AI
+
+| Katalog Produk | Asisten AI (Chatbot) |
+|:---:|:---:|
+| ![Katalog produk Tanjung Jaya](docs/screenshots/01-katalog-guest.png) | ![Chatbot menjawab dari katalog asli](docs/screenshots/50-chatbot-jawaban.png) |
+
+### Panel Administrator
+
+| Kelola Produk (25 produk) | Manajemen Pesanan |
+|:---:|:---:|
+| ![Daftar produk di panel admin](docs/screenshots/20-admin-produk.png) | ![Monitoring pesanan admin](docs/screenshots/23-admin-pesanan.png) |
+
+### Dashboard & Laporan Manager
+
+| Dashboard Eksekutif | Laporan Penjualan |
+|:---:|:---:|
+| ![Dashboard manager](docs/screenshots/40-manager-dashboard.png) | ![Laporan penjualan manager](docs/screenshots/41-manager-laporan.png) |
+
+### Gudang & Pelanggan
+
+| Monitor Stok Gudang | Keranjang Belanja |
+|:---:|:---:|
+| ![Monitor stok gudang](docs/screenshots/30-gudang-stok.png) | ![Keranjang belanja customer](docs/screenshots/11-keranjang.png) |
+
+> Daftar lengkap 25 tangkapan layar tersedia di folder [`docs/screenshots/`](docs/screenshots/).
+
 ## Fitur Utama
 
 ### Pelanggan (Customer)
@@ -81,7 +109,19 @@ npx playwright test tests/e2e/smoke-screenshots.spec.ts
 npx playwright test tests/e2e/register.spec.ts
 ```
 
-Hasil screenshot tersimpan di `docs/screenshots/` (katalog, keranjang, pesanan, admin, gudang, manager, dan jawaban chatbot).
+Uji ini membuka 25 halaman (guest, customer, admin, gudang, manager) plus satu percakapan chatbot,
+lalu mencatat error console / request gagal dan menyimpan tangkapan layarnya.
+
+Hasil screenshot tersimpan di `docs/screenshots/` dengan penomoran per peran:
+
+| Rentang | Isi |
+|---------|-----|
+| `01`–`03`   | Halaman publik (katalog, login, register) |
+| `10`–`16`   | Halaman pelanggan (katalog, keranjang, pesanan, wishlist, ulasan, retur, profil) |
+| `20`–`27`   | Panel admin (produk, kategori, pesanan, retur, ulasan, pengguna, audit log) |
+| `30`–`32`   | Panel gudang (stok, pesanan, retur) |
+| `40`–`42`   | Panel manager (dashboard, laporan, langganan) |
+| `50`        | Percakapan chatbot (jawaban dari katalog asli) |
 
 ## Hak Akses per Peran
 
