@@ -76,6 +76,22 @@ php artisan storage:link
 php artisan serve
 ```
 
+## Data Demo & Foto Produk
+
+Katalog demo berisi 25 produk (5 kategori). Fotonya diambil dari [Pexels](https://www.pexels.com)
+(Pexels License) — satu foto berbeda untuk tiap produk, bukan hasil crop dari satu gambar yang sama.
+
+| Perintah | Fungsi |
+|----------|--------|
+| `php tools/fetch-product-photos.php` | Mengunduh foto produk ke `storage/app/public/products/` **dan** `public/images/products/` (foto yang sudah ada dilewati). |
+| `php tools/fetch-product-photos.php --force --only=produk-23.jpg,produk-24.jpg` | Memaksa unduh ulang foto tertentu saja, mis. saat menemukan foto yang tidak cocok dengan produknya. |
+| `php tools/check-product-images.php` | Memastikan tiap produk punya foto yang file-nya benar-benar ada dan tidak ada foto yang dipakai berulang. |
+| `php tools/check-blade.php` | Meng-compile semua view Blade dan memvalidasi hasilnya (menangkap `@if`/`@endforeach` yang tidak seimbang). |
+| `php tools/smoke-test.php` | Mengirim request ke halaman utama lewat kernel Laravel dan menandai halaman yang isinya mengandung pesan error. |
+
+Pemetaan produk → id foto Pexels ada di konstanta `FOTO` pada `tools/fetch-product-photos.php`,
+jadi mengganti foto cukup dengan mengubah id di sana lalu menjalankan ulang dengan `--force`.
+
 ## Konfigurasi Asisten AI (Groq)
 
 Isi kredensial pada `.env`:
